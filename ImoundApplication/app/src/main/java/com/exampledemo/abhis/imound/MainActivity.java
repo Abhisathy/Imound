@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btn;
     private ImageView imageview;
-    private static final String IMAGE_DIRECTORY = "/demonuts";
     private int GALLERY = 1, CAMERA = 2;
     Service service;
     TextView textView;
@@ -66,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
-        // Change base URL to your upload server URL.
-        service = new Retrofit.Builder().baseUrl("http://10.25.55.250:5000/getImage/").client(client).build().create(Service.class);
+        // Change baseURL to your upload server URL.
+        service = new Retrofit.Builder().baseUrl("baseURL").client(client).build().create(Service.class);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,8 +185,6 @@ public class MainActivity extends AppCompatActivity {
         FileUploadService service =
                 ServiceGenerator.createService(FileUploadService.class);
 
-        // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
-        // use the FileUtils to get the actual file by uri
         android.net.Uri selectedImage = fileUri;
         String[] filePathColumn = {MediaStore.Images.Media.DATA};
         android.database.Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
@@ -214,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                 MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
 
         // add another part within the multipart request
-        String descriptionString = "hello, this is description speaking";
+        String descriptionString = "Test message";
         RequestBody description =
                 RequestBody.create(
                         okhttp3.MultipartBody.FORM, descriptionString);
